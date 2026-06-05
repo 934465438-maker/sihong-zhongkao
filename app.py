@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """泗洪中考志愿模拟填报 - Flask后端"""
-import os, csv, sqlite3
+import os, csv, re, sqlite3
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, send_file
 
@@ -51,8 +51,8 @@ def register():
         errors.append('请选择所在初中')
     if not phone:
         errors.append('请输入联系电话')
-    elif not phone.isdigit() or len(phone) != 11:
-        errors.append('请输入11位手机号码')
+    elif not re.match(r'^1[3-9]\d{9}$', phone):
+        errors.append('请输入有效的11位手机号码（1开头）')
 
     try:
         score = int(score_raw) if score_raw != '' else ''
@@ -66,7 +66,6 @@ def register():
     if errors:
         return jsonify({'ok': False, 'errors': errors}), 400
 
-    # 写入数据库
     db = get_db()
     try:
         db.execute(
@@ -75,11 +74,30 @@ def register():
         )
         db.commit()
     except sqlite3.IntegrityError:
-        return jsonify({'ok': False, 'errors': ['该手机号已注册，无需重复提交']}), 400
+        return jsonify({'ok': False, 'errors': ['该手机号已注册，请直接登录']}), 400
     finally:
         db.close()
 
-    return jsonify({'ok': True, 'msg': '注册成功！我们会及时与您联系。'})
+    return jsonify({'ok': True, 'msg': '注册成功！', 'name': name, 'phone': phone})
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json(force=True)
+    phone = (data.get('phone') or '').strip()
+
+    if not phone:
+        return jsonify({'ok': False, 'errors': ['请输入手机号']}), 400
+    if not re.match(r'^1[3-9]\d{9}$', phone):
+        return jsonify({'ok': False, 'errors': ['手机号格式不正确']}), 400
+
+    db = get_db()
+    row = db.execute('SELECT name, school, score FROM registrations WHERE phone = ?', (phone,)).fetchone()
+    db.close()
+
+    if not row:
+        return jsonify({'ok': False, 'errors': ['该手机号未注册，请先填写信息']}), 400
+
+    return jsonify({'ok': True, 'name': row['name'], 'phone': phone, 'school': row['school'], 'score': row['score']})
 
 @app.route('/admin')
 def admin():
