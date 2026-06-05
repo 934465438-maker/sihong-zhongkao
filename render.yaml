@@ -8,3 +8,20 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.0"
+      # 短信验证码配置
+      - key: SMS_PROVIDER
+        value: mock  # mock(开发测试) | smsbao(短信宝)
+      - key: SMSBAO_USER
+        sync: false  # 短信宝账号
+      - key: SMSBAO_PASS
+        sync: false  # 短信宝密码
+      - key: SMS_SIGN_NAME
+        sync: false  # 短信签名名称（需在短信宝后台审核通过）
+      - key: SMS_CODE_EXPIRE_MINUTES
+        value: "5"  # 验证码过期时间（分钟）
+      - key: SMS_CODE_LENGTH
+        value: "6"  # 验证码长度
+      - key: SMS_DAILY_LIMIT
+        value: "10"  # 每日每手机号发送上限
+      - key: SMS_INTERVAL_SECONDS
+        value: "60"  # 发送间隔（秒）
