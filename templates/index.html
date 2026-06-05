@@ -205,6 +205,7 @@ tr:nth-child(even) td{background:#FAFAFA}
   </div>
   <div id="result"></div>
 </div>
+</div>
 
 <!-- 分数线 -->
 <div class="page" id="p-score">
@@ -850,6 +851,5 @@ renderScore(2025);
 document.querySelectorAll('#rg-yr span').forEach(function(s){s.onclick=function(){renderScore(s.dataset.v)}});
 document.getElementById('faq-list').innerHTML=FAQD.map(function(f){return '<div class="faq" onclick="this.classList.toggle(\'open\')"><div class="faq-q">'+f[0]+'</div><div class="faq-a">'+f[1]+'</div></div>';}).join('');
 </script>
-</div>
 </body>
 </html>
