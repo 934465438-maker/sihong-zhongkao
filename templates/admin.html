@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>注册数据管理 - 泗洪中考志愿</title>
+<style>
+:root{--blue:#2563EB;--red:#DC2626;--green:#16A34A;--orange:#EA580C;--gray:#6B7280;--dark:#1F2937;--bg:#F5F7FA;--card:#fff;--border:#E5E7EB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--dark);line-height:1.6}
+.header{background:linear-gradient(135deg,#1E40AF,#2563EB);color:#fff;padding:20px;text-align:center}
+.header h1{font-size:20px;font-weight:800}
+.header p{font-size:12px;opacity:.8;margin-top:4px}
+.container{max-width:960px;margin:0 auto;padding:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat-card{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--border)}
+.stat-card .num{font-size:32px;font-weight:800;color:var(--blue)}
+.stat-card .label{font-size:12px;color:var(--gray);margin-top:2px}
+.card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--border)}
+.card-t{font-size:15px;font-weight:700;margin-bottom:10px}
+.btn{display:inline-block;padding:10px 20px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;text-decoration:none;color:#fff}
+.btn-blue{background:var(--blue)}.btn-blue:hover{background:#1D4ED8}
+.btn-green{background:var(--green)}.btn-green:hover{background:#15803D}
+.btns{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--blue);color:#fff;padding:8px 6px;font-weight:600;text-align:center;white-space:nowrap;position:sticky;top:0}
+td{padding:7px 6px;text-align:center;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:#FAFAFA}
+tr:hover td{background:#EFF6FF}
+.tbl-wrap{overflow-x:auto;max-height:60vh;overflow-y:auto;border-radius:8px;border:1px solid var(--border)}
+.school-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.school-item{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:12px}
+.school-item .count{font-weight:700;color:var(--blue)}
+.empty{text-align:center;padding:40px;color:var(--gray);font-size:14px}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>📊 注册数据管理</h1>
+  <p>泗洪中考志愿模拟填报 · 管理后台</p>
+</div>
+<div class="container">
+  <div class="stats">
+    <div class="stat-card"><div class="num">{{ total }}</div><div class="label">总注册人数</div></div>
+    <div class="stat-card"><div class="num">{{ school_stats|length }}</div><div class="label">覆盖初中数</div></div>
+    <div class="stat-card"><div class="num">{{ records|selectattr('score','ne','未填')|list|length }}</div><div class="label">已填分数人数</div></div>
+  </div>
+
+  <div class="btns">
+    <a href="/admin/export?token={{ token }}" class="btn btn-green">📥 导出CSV</a>
+    <a href="/" class="btn btn-blue">🏠 返回首页</a>
+  </div>
+
+  {% if records %}
+  <div class="card">
+    <div class="card-t">📋 注册记录（{{ total }}条）</div>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>#</th><th>时间</th><th>姓名</th><th>所在初中</th><th>分数</th><th>联系电话</th></tr>
+        {% for r in records %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ r.timestamp }}</td>
+          <td><b>{{ r.name }}</b></td>
+          <td>{{ r.school }}</td>
+          <td>{{ r.score }}</td>
+          <td>{{ r.phone }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-t">🏫 各初中注册分布</div>
+    <div class="school-stats">
+      {% for school, count in school_stats %}
+      <div class="school-item"><span>{{ school }}</span><span class="count">{{ count }}人</span></div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="empty">暂无注册数据</div>
+  {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>泗洪中考志愿模拟填报 · 二模参考版</title>
+<style>
+:root{--blue:#2563EB;--red:#DC2626;--green:#16A34A;--orange:#EA580C;--gold:#CA8A04;--gray:#6B7280;--dark:#1F2937;--bg:#F5F7FA;--card:#fff;--border:#E5E7EB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--dark);line-height:1.6}
+.app{max-width:800px;margin:0 auto;min-height:100vh}
+.header{background:linear-gradient(135deg,#2563EB,#1E40AF);color:#fff;padding:18px 20px;text-align:center}
+.header h1{font-size:20px;font-weight:800;letter-spacing:.5px}
+.header p{font-size:12px;opacity:.8;margin-top:2px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.tab{flex:1;text-align:center;padding:11px 0;font-size:12px;color:var(--gray);cursor:pointer;border-bottom:2.5px solid transparent;font-weight:500;transition:.2s}
+.tab.on{color:var(--blue);border-bottom-color:var(--blue);font-weight:700}
+.page{display:none;padding:16px}
+.page.on{display:block}
+.card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--border)}
+.card-t{font-size:15px;font-weight:700;margin-bottom:10px}
+.inp{margin-bottom:12px}
+.inp label{display:block;font-size:12px;color:var(--gray);margin-bottom:4px;font-weight:600}
+.inp input,.inp select{width:100%;height:44px;border:1.5px solid var(--border);border-radius:8px;padding:0 12px;font-size:16px;color:var(--dark);background:#fff}
+.inp input:focus,.inp select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.radio{display:flex;gap:8px}
+.radio span{flex:1;text-align:center;padding:9px 0;border:1.5px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;transition:.15s}
+.radio span.on{border-color:var(--blue);background:#DBEAFE;color:var(--blue);font-weight:700}
+.btn{display:block;width:100%;height:48px;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#2563EB,#1E40AF);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3);transition:.15s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;vertical-align:middle}
+.b-r{background:#FEE2E2;color:var(--red)}.b-g{background:#DCFCE7;color:var(--green)}.b-o{background:#FFF7ED;color:var(--orange)}.b-b{background:#DBEAFE;color:var(--blue)}
+.tip{padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:12px;line-height:1.7;border-left:3px solid}
+.tip-r{background:#FEF2F2;border-color:var(--red);color:#991B1B}
+.tip-b{background:#EFF6FF;border-color:var(--blue);color:#1E40AF}
+.tip-g{background:#F0FDF4;border-color:var(--green);color:#166534}
+.tip-o{background:#FFFBEB;border-color:var(--orange);color:#92400E}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.st{text-align:center;background:#fff;border-radius:8px;padding:10px 4px;box-shadow:0 1px 3px rgba(0,0,0,.06);border:1px solid var(--border)}
+.st .v{font-size:20px;font-weight:800;line-height:1.2}.st .l{font-size:10px;color:var(--gray);margin-top:1px}
+.tier{margin-bottom:10px}
+.tier-h{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:6px}
+.tier-h.sprint{background:#FEE2E2;color:var(--red)}.tier-h.stable{background:#DBEAFE;color:var(--blue)}.tier-h.safe{background:#DCFCE7;color:var(--green)}.tier-h.guarantee{background:#F3F4F6;color:var(--gray)}
+.sc{display:flex;align-items:center;padding:10px 12px;background:#fff;border:1.5px solid var(--border);border-radius:8px;margin-bottom:5px;gap:10px;transition:.15s}
+.sc:hover{border-color:var(--blue)}
+.sc .info{flex:1;min-width:0}.sc .nm{font-size:13px;font-weight:700}.sc .mt{font-size:11px;color:var(--gray);margin-top:1px}
+.sc .prob{height:6px;border-radius:3px;background:#F3F4F6;overflow:hidden;margin-top:3px}.sc .prob div{height:100%;border-radius:3px}
+.sc .right{text-align:right;flex-shrink:0}.sc .gap{font-size:18px;font-weight:800}.sc .gl{font-size:10px;color:var(--gray)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--blue);color:#fff;padding:7px 5px;font-weight:600;text-align:center;white-space:nowrap}
+td{padding:6px 5px;text-align:center;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:#FAFAFA}
+.hl{color:var(--red);font-weight:700}
+.faq{margin-bottom:6px;border:1.5px solid var(--border);border-radius:8px;overflow:hidden}
+.faq-q{padding:9px 12px;font-size:12px;font-weight:700;color:var(--blue);cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#FAFAFA}
+.faq-q::after{content:"▼";font-size:9px;color:var(--gray);transition:.2s}
+.faq.open .faq-q::after{transform:rotate(180deg)}
+.faq-a{padding:0 12px;max-height:0;overflow:hidden;transition:.25s;font-size:12px;line-height:1.7}
+.faq.open .faq-a{padding:10px 12px;max-height:300px}
+.foot{padding:20px 16px 36px;text-align:center;font-size:11px;color:var(--gray);line-height:1.8}
+.empty{text-align:center;padding:30px;color:var(--gray)}.empty .em{font-size:36px;margin-bottom:6px}
+.qlist{margin-bottom:8px}
+.qlist .qitem{display:flex;align-items:flex-start;gap:6px;padding:5px 0;font-size:12px;border-bottom:1px dashed var(--border)}
+.qlist .qitem:last-child{border:none}
+.qlist .qicon{flex-shrink:0;width:18px;text-align:center}
+.qlist .qtxt{flex:1;line-height:1.5}
+.reg-success{text-align:center;padding:30px 16px}
+.reg-success .icon{font-size:48px;margin-bottom:10px}
+.reg-success h3{color:var(--green);font-size:18px;margin-bottom:6px}
+.reg-success p{color:var(--gray);font-size:13px}
+.tab-locked{position:relative;opacity:.5;pointer-events:none}
+.tab-locked::after{content:'🔒';position:absolute;top:2px;right:2px;font-size:8px}
+@media(min-width:768px){.app{max-width:900px}.page{padding:20px 24px}.card{padding:20px}.stats{grid-template-columns:repeat(4,1fr)}.header h1{font-size:24px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header"><h1>📋 泗洪中考志愿模拟填报</h1><p>2026年二模参考版 · 数据驱动 · 科学决策</p></div>
+<div class="tabs">
+  <div class="tab on" data-p="home">🏠 首页</div>
+  <div class="tab tab-locked" data-p="score" id="tab-score">📊 分数线</div>
+  <div class="tab tab-locked" data-p="policy" id="tab-policy">📖 政策</div>
+  <div class="tab tab-locked" data-p="faq" id="tab-faq">❓ FAQ</div>
+</div>
+
+<!-- 首页 -->
+<div class="page on" id="p-home">
+
+  <!-- 注册区域（默认显示） -->
+  <div id="reg-section">
+    <div class="card">
+      <div class="card-t">📝 学生信息登记</div>
+      <div class="tip tip-b">请先填写基本信息，注册后即可使用志愿填报工具。信息仅用于志愿指导，不会泄露。</div>
+      <div id="reg-form">
+        <div class="inp"><label>学生姓名 <span style="color:var(--red)">*</span></label><input type="text" id="reg-name" placeholder="请输入学生姓名" maxlength="20"></div>
+        <div class="inp">
+          <label>所在初中 <span style="color:var(--red)">*</span></label>
+          <select id="reg-school">
+            <option value="">请选择学校</option>
+            <optgroup label="── 城区公办初中 ──">
+              <option>泗洪姜堰实验学校</option><option>泗洪县通济实验学校</option><option>泗洪县山河路实验学校</option><option>江苏省淮北中学</option><option>泗洪县第一实验学校</option><option>泗洪县衡山路实验学校</option><option>泗洪县第二实验学校</option><option>泗洪县洪泽湖路实验学校</option><option>泗洪县育才实验学校</option><option>泗洪县明德学校</option><option>泗洪县泗州学校</option><option>泗洪县洪桥学校</option><option>泗洪县虹州实验学校</option><option>泗洪通州实验学校</option>
+            </optgroup>
+            <optgroup label="── 城区民办初中 ──">
+              <option>泗洪育才启明学校</option><option>泗洪育才北辰学校</option><option>泗洪县新星城西学校</option><option>泗洪县新星城南学校</option><option>泗洪县振洪双语中学</option><option>泗洪县兴洪中学</option><option>泗洪县洪翔中学</option><option>泗洪县新星中学</option>
+            </optgroup>
+            <optgroup label="── 乡镇初中 ──">
+              <option>泗洪县双沟中学</option><option>泗洪县上塘中学</option><option>泗洪县魏营中学</option><option>泗洪县临淮中学</option><option>泗洪县半城中学</option><option>泗洪县孙园中学</option><option>泗洪县梅花中学</option><option>泗洪县归仁中学</option><option>泗洪县金锁镇中学</option><option>泗洪县朱湖中学</option><option>泗洪县界集中学</option><option>泗洪县龙集中学</option><option>泗洪县天岗湖中学</option><option>泗洪县车门中学</option><option>泗洪县石集中学</option><option>泗洪县城头实验学校</option><option>泗洪县峰山中学</option><option>泗洪县陈圩中学</option><option>泗洪县瑶沟中学</option><option>泗洪县曹庙中学</option><option>泗洪县四河中学</option><option>泗洪县太平中学</option>
+            </optgroup>
+            <optgroup label="── 涉农街道初中 ──">
+              <option>泗洪县重岗中学</option><option>泗洪县大楼中学</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="inp"><label>平时成绩/二模分数（满分800）</label><input type="number" id="reg-score" placeholder="选填，如580" min="0" max="800" inputmode="numeric"></div>
+        <div class="inp"><label>家长联系电话 <span style="color:var(--red)">*</span></label><input type="tel" id="reg-phone" placeholder="请输入11位手机号" maxlength="11" inputmode="numeric"></div>
+        <div id="reg-error" style="display:none" class="tip tip-r"></div>
+        <button class="btn" id="reg-btn" onclick="submitReg()">✅ 提交注册，开始使用</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 志愿填报区域（注册成功后显示） -->
+  <div id="tool-section" style="display:none">
+    <div class="tip tip-g" style="margin-bottom:12px">✅ 注册成功！欢迎回来，<b id="welcome-name"></b></div>
+    <div class="card">
+      <div class="card-t">📝 输入考生信息</div>
+      <div class="inp"><label>预估/实际中考总分（满分800）</label><input type="number" id="fs" placeholder="二模/三模/中考估分均可输入" min="0" max="800" inputmode="numeric"></div>
+      <div class="tip tip-b" style="margin-bottom:12px">💡 二模成绩通常比中考低10-30分，建议适当加分预估中考水平（详见FAQ）</div>
+      <div class="inp"><label>考生类型</label><div class="radio" id="rg-type"><span class="on" data-v="fresh">应届生</span><span data-v="repeat">往届生</span></div></div>
+    <div class="inp">
+      <label>所在初中学校</label>
+      <select id="sch" onchange="onSchoolChange()">
+        <option value="">请选择学校</option>
+        <optgroup label="── 城区公办初中 ──">
+          <option value="jysy">泗洪姜堰实验学校</option>
+          <option value="tjsy">泗洪县通济实验学校</option>
+          <option value="shsy">泗洪县山河路实验学校</option>
+          <option value="huaibei">江苏省淮北中学</option>
+          <option value="d1sy">泗洪县第一实验学校</option>
+          <option value="hssy">泗洪县衡山路实验学校</option>
+          <option value="d2sy">泗洪县第二实验学校</option>
+          <option value="hzsy">泗洪县洪泽湖路实验学校</option>
+          <option value="ycsy">泗洪县育才实验学校</option>
+          <option value="mdx">泗洪县明德学校</option>
+          <option value="szx">泗洪县泗州学校</option>
+          <option value="hqx">泗洪县洪桥学校</option>
+          <option value="hzsy2">泗洪县虹州实验学校</option>
+          <option value="tzsy">泗洪通州实验学校</option>
+        </optgroup>
+        <optgroup label="── 城区民办初中 ──">
+          <option value="ycqm">泗洪育才启明学校</option>
+          <option value="ycbc">泗洪育才北辰学校</option>
+          <option value="xxcx">泗洪县新星城西学校</option>
+          <option value="xxcn">泗洪县新星城南学校</option>
+          <option value="zhss">泗洪县振洪双语中学</option>
+          <option value="xhzz">泗洪县兴洪中学</option>
+          <option value="hxzz">泗洪县洪翔中学</option>
+          <option value="xxzz">泗洪县新星中学</option>
+        </optgroup>
+        <optgroup label="── 乡镇初中 ──">
+          <option value="sgzx">泗洪县双沟中学</option>
+          <option value="stzx">泗洪县上塘中学</option>
+          <option value="wyzx">泗洪县魏营中学</option>
+          <option value="lhzx">泗洪县临淮中学</option>
+          <option value="bczx">泗洪县半城中学</option>
+          <option value="syzx">泗洪县孙园中学</option>
+          <option value="mhzx">泗洪县梅花中学</option>
+          <option value="grzx">泗洪县归仁中学</option>
+          <option value="jszx">泗洪县金锁镇中学</option>
+          <option value="zhzx">泗洪县朱湖中学</option>
+          <option value="jjzx">泗洪县界集中学</option>
+          <option value="ljzx">泗洪县龙集中学</option>
+          <option value="tghzx">泗洪县天岗湖中学</option>
+          <option value="cmzx">泗洪县车门中学</option>
+          <option value="sjzx">泗洪县石集中学</option>
+          <option value="ctzx">泗洪县城头实验学校</option>
+          <option value="fzx">泗洪县峰山中学</option>
+          <option value="cwx">泗洪县陈圩中学</option>
+          <option value="ygx">泗洪县瑶沟中学</option>
+          <option value="cmx">泗洪县曹庙中学</option>
+          <option value="shzx">泗洪县四河中学</option>
+          <option value="tpzx">泗洪县太平中学</option>
+        </optgroup>
+        <optgroup label="── 涉农街道初中 ──">
+          <option value="cgzx">泗洪县重岗中学</option>
+          <option value="dlzx">泗洪县大楼中学</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="inp"><label>是否在本校连续就读三年</label><div class="radio" id="rg-3yr"><span class="on" data-v="yes">是</span><span data-v="no">否（有转学）</span></div></div>
+    <div class="inp"><label>综合素质评价等第</label><select id="ev"><option value="A">A（优秀）</option><option value="B" selected>B（良好）</option><option value="C">C（合格）</option><option value="D">D（待合格）</option></select></div>
+    <button class="btn" onclick="analyze()">🔍 生成志愿方案</button>
+  </div>
+  <div id="result"></div>
+</div>
+
+<!-- 分数线 -->
+<div class="page" id="p-score">
+  <div class="card">
+    <div class="card-t">📊 选择年份</div>
+    <div class="radio" id="rg-yr"><span data-v="2022">2022</span><span data-v="2023">2023</span><span data-v="2024">2024</span><span class="on" data-v="2025">2025</span></div>
+  </div>
+  <div id="score-tb"></div>
+  <div class="two">
+    <div class="card"><div class="card-t">📉 最低控制线变化</div>
+      <table><tr><th>年份</th><th>控制线</th><th>较上年</th><th>泗洪中学</th><th>分差</th></tr>
+      <tr><td>2022</td><td>548</td><td>—</td><td>723</td><td>175</td></tr>
+      <tr><td>2023</td><td>506</td><td class="hl">↓42</td><td>705</td><td>199</td></tr>
+      <tr><td>2024</td><td>455</td><td class="hl">↓51</td><td>709</td><td>254</td></tr>
+      <tr><td>2025</td><td>445</td><td class="hl">↓10</td><td>715</td><td class="hl">270</td></tr></table>
+      <div class="tip tip-r" style="margin-top:8px">⚠ 三年控制线降103分，但泗洪中学线反升10分，两极分化加剧！</div>
+    </div>
+    <div class="card"><div class="card-t">📈 2026年预测</div>
+      <table><tr><th>学校</th><th>2025线</th><th>2026预测</th><th>趋势</th></tr>
+      <tr><td><b>泗洪中学</b></td><td>715</td><td class="hl">715-725</td><td>↑</td></tr>
+      <tr><td><b>姜堰高中</b></td><td>699</td><td class="hl">700-710</td><td>↑</td></tr>
+      <tr><td><b>第一高级中学</b></td><td>668</td><td class="hl">670-680</td><td>↑</td></tr>
+      <tr><td><b>淮北中学</b></td><td>651</td><td>650-660</td><td>→</td></tr>
+      <tr><td>新星中学</td><td>604</td><td>600-610</td><td>→</td></tr>
+      <tr><td>洪翔中学</td><td>584</td><td>580-590</td><td>→</td></tr>
+      <tr><td>兴洪中学</td><td>527</td><td>520-530</td><td>→</td></tr>
+      <tr><td>振洪双语</td><td>445</td><td>440-450</td><td>→</td></tr></table>
+    </div>
+  </div>
+</div>
+
+<!-- 政策 -->
+<div class="page" id="p-policy">
+  <div class="two">
+    <div class="card"><div class="card-t">🎯 指标生政策</div>
+      <div class="tip tip-r"><b>核心：热点公办高中70%计划分配到各初中（含民办），最多降20分！必须填第一志愿！</b></div>
+      <table><tr><th>条件</th><th>要求</th></tr>
+      <tr><td>范围</td><td style="text-align:left">公办+民办初中均享受指标生政策</td></tr>
+      <tr><td>学籍</td><td style="text-align:left">连续三年在校在籍</td></tr>
+      <tr><td>综评</td><td style="text-align:left">四星级高中需A等，三星级需B等及以上</td></tr>
+      <tr><td>志愿</td><td style="text-align:left" class="hl">必须第一志愿！</td></tr>
+      <tr><td>降分</td><td style="text-align:left">最多降20分，校内名额内从高到低</td></tr></table>
+    </div>
+    <div class="card"><div class="card-t">🌾 农村专项计划</div>
+      <div class="tip tip-g"><b>农村考生专属通道，近年实际降分约24-44分！在「特殊类型」栏填报，录不上不影响后续。</b></div>
+      <table><tr><th>学校</th><th>统招线</th><th>专项线</th><th>降分</th></tr>
+      <tr><td><b>泗洪中学</b></td><td>715</td><td>691</td><td class="hl">↓24</td></tr>
+      <tr><td><b>姜堰高中</b></td><td>699</td><td>655</td><td class="hl">↓44</td></tr>
+      <tr><td><b>第一高级中学</b></td><td>668</td><td>629</td><td class="hl">↓39</td></tr>
+      <tr><td><b>淮北中学</b></td><td>651</td><td>622</td><td class="hl">↓29</td></tr></table>
+      <div class="tip tip-o" style="margin-top:8px">需：应届+连续三年在籍+乡镇/涉农街道初中</div>
+    </div>
+  </div>
+  <div class="two">
+    <div class="card"><div class="card-t">🎓 3+4 / 5+2 本科通道</div>
+      <table><tr><th>类型</th><th>学制</th><th>学历</th><th>2025线</th></tr>
+      <tr><td><b>3+4</b></td><td>3年中职+4年本科</td><td>全日制本科</td><td class="hl">642</td></tr>
+      <tr><td><b>5+2</b></td><td>5年高职+2年本科</td><td>全日制本科</td><td>603</td></tr></table>
+      <div class="tip tip-g" style="margin-top:8px">💡 毕业拿<b>全日制本科文凭</b>，和普通高考本科完全一样！录不上不影响后续普高。</div>
+    </div>
+    <div class="card"><div class="card-t">📅 关键时间节点</div>
+      <table><tr><th>时间</th><th>事项</th></tr>
+      <tr><td>4-5月</td><td>体育中考</td></tr>
+      <tr><td>5月底</td><td>指标生名单公示</td></tr>
+      <tr><td>6月中旬</td><td>中考文化课</td></tr>
+      <tr><td class="hl">6月19-21日</td><td class="hl">网上填报志愿</td></tr>
+      <tr><td>7月4日左右</td><td>公布成绩+录取</td></tr>
+      <tr><td>7月5日</td><td>征求志愿</td></tr></table>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="page" id="p-faq">
+  <div class="card"><div class="card-t">❓ 常见问题</div><div id="faq-list"></div></div>
+</div>
+
+<div class="foot">数据来源：泗洪县教育局 · 宿迁市教育考试中心<br>预测仅供参考，以2026年官方发布为准</div>
+</div>
+
+<script>
+// ====== 高中数据 ======
+var HS=[
+  {id:'sihong',nm:'泗洪中学',tp:'公办',st:'四星',s:{2022:723,2023:705,2024:709,2025:715},e:{2022:1660,2023:1563,2024:1535,2025:1550},r25:691,rd:24,hasR:1,hasQ:1,fo:1},
+  {id:'jiangyan',nm:'姜堰高级中学',tp:'公办',st:'三星',s:{2022:709,2023:692,2024:696,2025:699},e:{2022:1138,2023:1024,2024:1010,2025:1150},r25:655,rd:44,hasR:1,hasQ:1,fo:0},
+  {id:'diyi',nm:'第一高级中学',tp:'公办',st:'—',s:{2022:660,2023:648,2024:667,2025:668},e:{2022:1522,2023:1466,2024:1489,2025:1550},r25:629,rd:39,hasR:1,hasQ:1,fo:0},
+  {id:'huaibei',nm:'淮北中学',tp:'公办',st:'四星',s:{2022:682,2023:651,2024:646,2025:651},e:{2022:1203,2023:1195,2024:1308,2025:1450},r25:622,rd:29,hasR:1,hasQ:1,fo:1},
+  {id:'xinxing',nm:'新星中学',tp:'民办',st:'三星',s:{2022:615,2023:602,2024:593,2025:604},e:{2022:1001,2023:1003,2024:1001,2025:950},hasR:0,hasQ:0,fo:0},
+  {id:'hongxiang',nm:'洪翔中学',tp:'民办',st:'四星',s:{2022:613,2023:583,2024:569,2025:584},e:{2022:1405,2023:1534,2024:1543,2025:1300},hasR:0,hasQ:0,fo:1},
+  {id:'xinghong',nm:'兴洪中学',tp:'民办',st:'三星',s:{2022:576,2023:541,2024:515,2025:527},e:{2022:1052,2023:1180,2024:1251,2025:1500},hasR:0,hasQ:0,fo:0},
+  {id:'zhenhong',nm:'振洪双语中学',tp:'民办',st:'—',s:{2022:548,2023:509,2024:455,2025:445},e:{2022:741,2023:766,2024:1057,2025:1500},hasR:0,hasQ:0,fo:0},
+];
+var PRED={sihong:[715,725],jiangyan:[700,710],diyi:[670,680],huaibei:[650,660],xinxing:[600,610],hongxiang:[580,590],xinghong:[520,530],zhenhong:[440,450],ctrl:[440,450]};
+var CTRL={2022:548,2023:506,2024:455,2025:445};
+var ZG=[{n:'泗洪中专综高班',s:{2022:548,2023:506,2024:455,2025:463},e:{2025:340}},{n:'新星中专综高班',s:{2024:492,2025:490},e:{2025:240}},{n:'宿迁工业中专综高班',s:{2024:455,2025:445},e:{2025:340}}];
+
+// ====== 初中学校数据 ======
+var JHS={
+  jysy:{nm:'泗洪姜堰实验学校',area:'city',isRural:false,isPub:true},
+  tjsy:{nm:'泗洪县通济实验学校',area:'city',isRural:false,isPub:true},
+  shsy:{nm:'泗洪县山河路实验学校',area:'city',isRural:false,isPub:true},
+  huaibei:{nm:'江苏省淮北中学',area:'city',isRural:false,isPub:true},
+  d1sy:{nm:'泗洪县第一实验学校',area:'city',isRural:false,isPub:true},
+  hssy:{nm:'泗洪县衡山路实验学校',area:'city',isRural:false,isPub:true},
+  d2sy:{nm:'泗洪县第二实验学校',area:'city',isRural:false,isPub:true},
+  hzsy:{nm:'泗洪县洪泽湖路实验学校',area:'city',isRural:false,isPub:true},
+  ycsy:{nm:'泗洪县育才实验学校',area:'city',isRural:false,isPub:true},
+  mdx:{nm:'泗洪县明德学校',area:'city',isRural:false,isPub:true},
+  szx:{nm:'泗洪县泗州学校',area:'city',isRural:false,isPub:true},
+  hqx:{nm:'泗洪县洪桥学校',area:'city',isRural:false,isPub:true},
+  hzsy2:{nm:'泗洪县虹州实验学校',area:'city',isRural:false,isPub:true},
+  tzsy:{nm:'泗洪通州实验学校',area:'city',isRural:false,isPub:true},
+  ycqm:{nm:'泗洪育才启明学校',area:'city',isRural:false,isPub:false},
+  ycbc:{nm:'泗洪育才北辰学校',area:'city',isRural:false,isPub:false},
+  xxcx:{nm:'泗洪县新星城西学校',area:'city',isRural:false,isPub:false},
+  xxcn:{nm:'泗洪县新星城南学校',area:'city',isRural:false,isPub:false},
+  zhss:{nm:'泗洪县振洪双语中学',area:'city',isRural:false,isPub:false},
+  xhzz:{nm:'泗洪县兴洪中学',area:'city',isRural:false,isPub:false},
+  hxzz:{nm:'泗洪县洪翔中学',area:'city',isRural:false,isPub:false},
+  xxzz:{nm:'泗洪县新星中学',area:'city',isRural:false,isPub:false},
+  sgzx:{nm:'泗洪县双沟中学',area:'town',isRural:true,isPub:true},
+  stzx:{nm:'泗洪县上塘中学',area:'town',isRural:true,isPub:true},
+  wyzx:{nm:'泗洪县魏营中学',area:'town',isRural:true,isPub:true},
+  lhzx:{nm:'泗洪县临淮中学',area:'town',isRural:true,isPub:true},
+  bczx:{nm:'泗洪县半城中学',area:'town',isRural:true,isPub:true},
+  syzx:{nm:'泗洪县孙园中学',area:'town',isRural:true,isPub:true},
+  mhzx:{nm:'泗洪县梅花中学',area:'town',isRural:true,isPub:true},
+  grzx:{nm:'泗洪县归仁中学',area:'town',isRural:true,isPub:true},
+  jszx:{nm:'泗洪县金锁镇中学',area:'town',isRural:true,isPub:true},
+  zhzx:{nm:'泗洪县朱湖中学',area:'town',isRural:true,isPub:true},
+  jjzx:{nm:'泗洪县界集中学',area:'town',isRural:true,isPub:true},
+  ljzx:{nm:'泗洪县龙集中学',area:'town',isRural:true,isPub:true},
+  tghzx:{nm:'泗洪县天岗湖中学',area:'town',isRural:true,isPub:true},
+  cmzx:{nm:'泗洪县车门中学',area:'town',isRural:true,isPub:true},
+  sjzx:{nm:'泗洪县石集中学',area:'town',isRural:true,isPub:true},
+  ctzx:{nm:'泗洪县城头实验学校',area:'town',isRural:true,isPub:true},
+  fzx:{nm:'泗洪县峰山中学',area:'town',isRural:true,isPub:true},
+  cwx:{nm:'泗洪县陈圩中学',area:'town',isRural:true,isPub:true},
+  ygx:{nm:'泗洪县瑶沟中学',area:'town',isRural:true,isPub:true},
+  cmx:{nm:'泗洪县曹庙中学',area:'town',isRural:true,isPub:true},
+  shzx:{nm:'泗洪县四河中学',area:'town',isRural:true,isPub:true},
+  tpzx:{nm:'泗洪县太平中学',area:'town',isRural:true,isPub:true},
+  cgzx:{nm:'泗洪县重岗中学',area:'rural_street',isRural:true,isPub:true},
+  dlzx:{nm:'泗洪县大楼中学',area:'rural_street',isRural:true,isPub:true},
+};
+
+var FAQD=[
+  ['指标生怎么确认有没有资格？','去问学校教务处或班主任，确认：①初中有多少指标名额；②你是否满足「连续三年在校在籍」。5月底学校公示名单。'],
+  ['农村专项怎么填？','在第一批次「特殊类型」栏填报，不是普通志愿栏！录不上不影响后续，零风险。'],
+  ['综合高中班和普高有啥区别？','普高学籍、学普高课程、参加普通高考。主要区别是办在中职学校里，是低分上普高的好通道。'],
+  ['3+4是什么？','3年中职+4年本科=全日制本科学历！和普通高考本科完全一样。2025年最低线642分，性价比极高。'],
+  ['5+2和3+4有啥区别？','3+4是3+4年本科，5+2是5年高职+2年本科。都是全日制本科。5+2分数要求更低（603分），但学制多1年。'],
+  ['老师建议和我想的不一样咋办？','志愿是考生和家长的权力！严禁教师包办代替。可参考分析，但决定权在你。'],
+  ['8个志愿全填普高行不行？','可以但不建议。建议留1-2个给3+4或5+2本科通道，万一普高没录还有本科出路。'],
+  ['征求志愿是什么？','补录！7月5日发布剩余计划。已录取不去报到的不能参加。'],
+  ['往届生能报泗洪中学吗？','不能！四星级高中（泗洪中学、淮北中学、洪翔中学）只招应届生。'],
+  ['同分怎么录取？','同分跟进——录取线上总分相同的考生都会被录取，不会因同分再淘汰。'],
+  ['退档后还能参加同批次吗？','不能！退档后只能参加下一批次。退档要慎重！'],
+  ['第一批次没录上怎么办？','自动进入第二批次（五年制高职+3+3），再没录上进入第三批次。7月5日还有征求志愿补录。'],
+  ['二模分数怎么参考？','二模难度通常高于中考，一般比中考低10-30分。建议：二模分数+10~30分≈中考预估分。例如二模550，中考预估560-580。三模更接近真实水平。'],
+  ['二模和中考难度差多少？','近年规律：二模>中考难度，二模平均分比中考低15-25分左右。但每年不同，仅作参考。关键看自己在年级的排名和学校往年中考表现。'],
+  ['模考排名比分数更重要吗？','是的！模考分数受试卷难度影响波动大，但排名更稳定。建议：①问班主任自己年级排名；②了解学校往年该排名能上什么高中；③用排名反推中考分数更准。'],
+  ['几个志愿怎么分配？','建议8个志愿分配：冲1-2所（不超过10分差距）+稳2所（超线0-10分）+保2所（超线10-20分）+兜1-2所（超线20分以上）。别全冲也别全兜。'],
+];
+
+// ====== 注册状态 ======
+var isRegistered=false;
+
+function unlockApp(userName){
+  isRegistered=true;
+  document.getElementById('reg-section').style.display='none';
+  document.getElementById('tool-section').style.display='block';
+  document.getElementById('welcome-name').textContent=userName;
+  // 解锁所有tab
+  document.querySelectorAll('.tab-locked').forEach(function(t){
+    t.classList.remove('tab-locked');
+    t.style.opacity='1';
+    t.style.pointerEvents='auto';
+  });
+}
+
+// ====== Tab切换 ======
+document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){
+  if(t.classList.contains('tab-locked')){
+    alert('请先完成注册信息填写');
+    return;
+  }
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('on')});
+  t.classList.add('on');
+  document.getElementById('p-'+t.dataset.p).classList.add('on');
+}});
+
+// ====== Radio组件 ======
+document.querySelectorAll('.radio').forEach(function(g){
+  g.querySelectorAll('span').forEach(function(s){s.onclick=function(){
+    g.querySelectorAll('span').forEach(function(x){x.classList.remove('on')});
+    s.classList.add('on');
+  }});
+});
+
+function rv(id){var el=document.querySelector('#'+id+' span.on');return el?el.dataset.v:'';}
+
+// ====== 选择学校后自动更新 ======
+function onSchoolChange(){}
+
+// ====== 分数线 ======
+function renderScore(yr){
+  var ctrl=CTRL[yr];
+  var h='<div class="card"><div class="card-t">'+yr+'年录取分数线（控制线：'+ctrl+'分）</div><table><tr><th>学校</th><th>性质</th><th>统招线</th><th>招生</th><th>农村专项线</th></tr>';
+  HS.forEach(function(s){
+    var v=s.s[yr];if(!v)return;
+    var en=s.e[yr]||'—';
+    var rl=(yr===2025&&s.r25)?s.r25:'—';
+    h+='<tr><td style="text-align:left;font-weight:600">'+s.nm+'</td><td>'+s.tp+s.st+'</td><td style="font-weight:700;color:var(--blue)">'+v+'</td><td>'+en+'</td><td>'+rl+'</td></tr>';
+  });
+  ZG.forEach(function(z){if(!z.s[yr])return;h+='<tr><td style="text-align:left">'+z.n+'</td><td>综高</td><td>'+z.s[yr]+'</td><td>'+(z.e[yr]||'—')+'</td><td>—</td></tr>';});
+  h+='</table></div>';
+  document.getElementById('score-tb').innerHTML=h;
+}
+renderScore(2025);
+document.querySelectorAll('#rg-yr span').forEach(function(s){s.onclick=function(){renderScore(s.dataset.v)}});
+
+// ====== FAQ ======
+document.getElementById('faq-list').innerHTML=FAQD.map(function(f){return '<div class="faq" onclick="this.classList.toggle(\'open\')"><div class="faq-q">'+f[0]+'</div><div class="faq-a">'+f[1]+'</div></div>';}).join('');
+
+// ====== 注册提交 ======
+function submitReg(){
+  var name=document.getElementById('reg-name').value.trim();
+  var school=document.getElementById('reg-school').value;
+  var score=document.getElementById('reg-score').value;
+  var phone=document.getElementById('reg-phone').value.trim();
+  var errEl=document.getElementById('reg-error');
+  var errors=[];
+
+  if(!name) errors.push('请输入学生姓名');
+  if(!school) errors.push('请选择所在初中');
+  if(!phone) errors.push('请输入联系电话');
+  else if(!/^\d{11}$/.test(phone)) errors.push('请输入11位手机号码');
+  if(score){
+    var sc=parseInt(score);
+    if(isNaN(sc)||sc<0||sc>800) errors.push('分数应在0-800之间');
+  }
+
+  if(errors.length){
+    errEl.innerHTML=errors.join('<br>');
+    errEl.style.display='block';
+    return;
+  }
+  errEl.style.display='none';
+
+  var btn=document.getElementById('reg-btn');
+  btn.disabled=true;
+  btn.textContent='提交中...';
+
+  fetch('/api/register',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:name,school:school,score:score||'',phone:phone})
+  }).then(function(r){return r.json()}).then(function(d){
+    btn.disabled=false;
+    btn.textContent='✅ 提交注册';
+    if(d.ok){
+      unlockApp(name);
+    }else{
+      errEl.innerHTML=(d.errors||['提交失败']).join('<br>');
+      errEl.style.display='block';
+    }
+  }).catch(function(e){
+    btn.disabled=false;
+    btn.textContent='✅ 提交注册';
+    errEl.innerHTML='网络错误，请重试';
+    errEl.style.display='block';
+  });
+}
+
+// ====== 概率计算 ======
+function calcProb(score,effLine){
+  var g=score-effLine;
+  var p,l,cls;
+  if(g<-20){p=0;l='极低';cls='sprint'}
+  else if(g<-10){p=10;l='很低';cls='sprint'}
+  else if(g<0){p=25;l='较低';cls='sprint'}
+  else if(g<5){p=45;l='中等';cls='stable'}
+  else if(g<10){p=60;l='较高';cls='stable'}
+  else if(g<20){p=75;l='高';cls='safe'}
+  else if(g<30){p=88;l='很高';cls='safe'}
+  else if(g<50){p=95;l='极高';cls='guarantee'}
+  else{p=99;l='稳录';cls='guarantee'}
+  return{p:p,l:l,cls:cls,eff:effLine,g:g};
+}
+
+// ====== 核心分析 ======
+function analyze(){
+  var score=parseInt(document.getElementById('fs').value);
+  if(!score||score<0||score>800){alert('请输入有效分数（0-800）');return;}
+
+  var fresh=rv('rg-type')==='fresh';
+  var schId=document.getElementById('sch').value;
+  var tyr=rv('rg-3yr')==='yes';
+  var ev=document.getElementById('ev').value;
+  var sch=schId?JHS[schId]:null;
+
+  var canQ4=false;
+  var canQ3=false;
+  var qReasons=[];
+  var q4Reasons=[];
+
+  if(!fresh) qReasons.push('往届生不可使用指标生');
+  if(!tyr) qReasons.push('需连续三年在校在籍（有转学即不符）');
+  if(ev!=='A') q4Reasons.push('四星级高中指标生需综评A等，您当前为'+ev+'等');
+  if(ev==='D') qReasons.push('综评D等不满足任何指标生要求');
+  if(!schId) qReasons.push('请选择初中学校以判定指标生资格');
+
+  if(fresh&&tyr&&schId&&ev!=='D'&&sch){
+    canQ3=(ev==='A'||ev==='B');
+    canQ4=(ev==='A');
+    if(!canQ4&&ev!=='A') q4Reasons.push('四星级高中指标生需综评A等');
+  }
+
+  var canR=false;
+  var rReasons=[];
+  if(!fresh) rReasons.push('往届生不可使用农村专项');
+  if(!tyr) rReasons.push('需连续三年在校在籍');
+  if(!schId) rReasons.push('请选择初中学校以判定农村专项资格');
+  else if(sch&&!sch.isRural) rReasons.push('您所在学校（'+sch.nm+'）属于城区，不在农村专项范围内');
+
+  if(fresh&&tyr&&schId&&sch&&sch.isRural){
+    canR=true;
+  }
+
+  var qUsableSchools=[];
+  if(canQ4||canQ3){
+    HS.forEach(function(s){
+      if(!s.hasQ)return;
+      if(s.st==='四星'&&!canQ4)return;
+      if(s.st!=='四星'&&!canQ3&&!canQ4)return;
+      if(s.fo&&!fresh)return;
+      var pl=PRED[s.id]?PRED[s.id][0]:s.s[2025];
+      var effLine=pl-20;
+      if(score>=effLine-20){
+        qUsableSchools.push({nm:s.nm,effLine:effLine,gap:score-effLine});
+      }
+    });
+  }
+  var qUsable=qUsableSchools.length>0;
+
+  var rUsableSchools=[];
+  if(canR){
+    HS.forEach(function(s){
+      if(!s.hasR)return;
+      var rLine=s.r25;
+      if(rLine&&score>=rLine-20){
+        rUsableSchools.push({nm:s.nm,rLine:rLine,gap:score-rLine,rd:s.rd});
+      }
+    });
+  }
+  var rUsable=rUsableSchools.length>0;
+
+  var schName=sch?sch.nm:'未选择';
+  var schArea=sch?(sch.area==='city'?'城区':sch.area==='town'?'乡镇':'涉农街道'):'—';
+
+  var tl=score>=720?'尖子生':score>=690?'优等生':score>=650?'中上生':score>=600?'中等生':score>=500?'中下生':score>=440?'临界生':'低于控制线';
+  var tc=score>=720?'var(--red)':score>=690?'var(--orange)':score>=650?'var(--blue)':score>=600?'var(--gold)':score>=500?'var(--green)':score>=440?'var(--gray)':'var(--red)';
+
+  var h='<div class="stats"><div class="st"><div class="v" style="color:'+tc+'">'+score+'</div><div class="l">预估分数</div></div><div class="st"><div class="v" style="color:'+tc+'">'+tl+'</div><div class="l">层次定位</div></div><div class="st"><div class="v" style="color:'+((canQ4||canQ3)&&qUsable?'var(--green)':(canQ4||canQ3)?'var(--orange)':'var(--gray)')+'">'+((canQ4||canQ3)&&qUsable?'✓':(canQ4||canQ3)?'⚠':'✗')+'</div><div class="l">指标生</div></div><div class="st"><div class="v" style="color:'+(canR&&rUsable?'var(--green)':canR?'var(--orange)':'var(--gray)')+'">'+(canR&&rUsable?'✓':canR?'⚠':'✗')+'</div><div class="l">农村专项</div></div></div>';
+
+  h+='<div class="card"><div class="card-t">🔍 资格判定结果</div>';
+  h+='<div style="font-size:12px;color:var(--gray);margin-bottom:8px">学校：'+schName+'（'+schArea+'）</div>';
+
+  h+='<div class="qlist">';
+  if(canQ4||canQ3){
+    if(qUsable){
+      var qRange=canQ4?'四星级+三星级':'仅三星级';
+      h+='<div class="qitem"><div class="qicon" style="color:var(--green)">✅</div><div class="qtxt"><b>指标生资格：符合且可用</b>（'+qRange+'高中可享，最多降20分）</div></div>';
+      var qSchoolNames=qUsableSchools.map(function(x){return x.nm+'（有效线'+x.effLine+'，差'+(x.gap>=0?'+':'')+x.gap+'分）'});
+      h+='<div class="qitem"><div class="qicon" style="color:var(--green)">📊</div><div class="qtxt">可冲刺学校：'+qSchoolNames.join('；')+'</div></div>';
+    }else{
+      var qRange=canQ4?'四星级+三星级':'仅三星级';
+      h+='<div class="qitem"><div class="qicon" style="color:var(--orange)">⚠</div><div class="qtxt"><b>指标生资格：符合但当前分数无法使用</b>（'+qRange+'高中可享，但4所热点高中指标生有效线均远超'+score+'分）</div></div>';
+      var minEffLine=9999;
+      HS.forEach(function(s){
+        if(!s.hasQ)return;
+        var pl=PRED[s.id]?PRED[s.id][0]:s.s[2025];
+        var eff=pl-20;
+        if(eff<minEffLine) minEffLine=eff;
+      });
+      h+='<div class="qitem"><div class="qicon" style="color:var(--red)">📉</div><div class="qtxt">最低指标生有效线为'+minEffLine+'分，您差'+(minEffLine-score)+'分，指标生降20分仍不够</div></div>';
+      h+='<div class="qitem"><div class="qicon" style="color:var(--gray)">💡</div><div class="qtxt">建议：关注民办高中或综合高中班，提高分数是关键</div></div>';
+    }
+    if(!canQ4&&canQ3&&q4Reasons.length) h+='<div class="qitem"><div class="qicon" style="color:var(--orange)">⚠</div><div class="qtxt">四星级不可原因：'+q4Reasons.join('；')+'</div></div>';
+  }else{
+    h+='<div class="qitem"><div class="qicon" style="color:var(--red)">❌</div><div class="qtxt"><b>指标生资格：不符合</b></div></div>';
+    if(qReasons.length) h+='<div class="qitem"><div class="qicon" style="color:var(--gray)">·</div><div class="qtxt">原因：'+qReasons.join('；')+'</div></div>';
+  }
+  if(canR){
+    if(rUsable){
+      h+='<div class="qitem"><div class="qicon" style="color:var(--green)">✅</div><div class="qtxt"><b>农村专项资格：符合且可用</b>（近年实际降分约24-44分，务必在「特殊类型」栏填报）</div></div>';
+      var rSchoolNames=rUsableSchools.map(function(x){return x.nm+'（专项线'+x.rLine+'，降'+x.rd+'分，差'+(x.gap>=0?'+':'')+x.gap+'分）'});
+      h+='<div class="qitem"><div class="qicon" style="color:var(--green)">📊</div><div class="qtxt">可冲刺学校：'+rSchoolNames.join('；')+'</div></div>';
+    }else{
+      h+='<div class="qitem"><div class="qicon" style="color:var(--orange)">⚠</div><div class="qtxt"><b>农村专项资格：符合但当前分数无法使用</b>（各校农村专项线均远超'+score+'分）</div></div>';
+      var minRLine=9999;
+      HS.forEach(function(s){if(s.hasR&&s.r25&&s.r25<minRLine)minRLine=s.r25});
+      h+='<div class="qitem"><div class="qicon" style="color:var(--red)">📉</div><div class="qtxt">最低农村专项线为'+minRLine+'分，您差'+(minRLine-score)+'分</div></div>';
+    }
+  }else{
+    h+='<div class="qitem"><div class="qicon" style="color:var(--red)">❌</div><div class="qtxt"><b>农村专项资格：不符合</b></div></div>';
+    if(rReasons.length) h+='<div class="qitem"><div class="qicon" style="color:var(--gray)">·</div><div class="qtxt">原因：'+rReasons.join('；')+'</div></div>';
+  }
+  h+='</div></div>';
+
+  var tiers={sprint:[],stable:[],safe:[],guarantee:[]};
+  var allData=[];
+
+  HS.forEach(function(s){
+    if(s.fo&&!fresh)return;
+    var pl=PRED[s.id]?PRED[s.id][0]:s.s[2025];
+    var qL=null;
+    if(s.hasQ){
+      if(s.st==='四星'&&canQ4) qL=pl-20;
+      else if(s.st!=='四星'&&(canQ4||canQ3)) qL=pl-20;
+    }
+    var rL=(canR&&s.hasR)?s.r25:null;
+    var effLine=pl;
+    if(qL!==null&&qL<effLine) effLine=qL;
+    if(rL!==null&&rL<effLine) effLine=rL;
+
+    var pr=calcProb(score,effLine);
+
+    var gapFromPred=score-pl;
+    var gapFromEff=score-effLine;
+    var canSprint=false;
+
+    if(gapFromPred>=-10){
+      canSprint=true;
+    }else if(qL!==null&&gapFromEff>=-20){
+      canSprint=true;
+    }else if(rL!==null&&gapFromEff>=(score-rL)){
+      canSprint=true;
+    }
+
+    var item={
+      id:s.id,nm:s.nm,tp:s.tp,st:s.st,pl:pl,pr:pr,
+      qL:qL,rL:rL,effLine:effLine,
+      useQ:qL!==null,useR:rL!==null,
+      fo:s.fo,gapFromPred:gapFromPred,gapFromEff:gapFromEff,
+      canSprint:canSprint
+    };
+    allData.push(item);
+
+    if(pr.cls==='sprint'&&canSprint){
+      tiers.sprint.push(item);
+    }else if(pr.cls==='sprint'&&!canSprint){
+    }else{
+      if(tiers[pr.cls]) tiers[pr.cls].push(item);
+    }
+  });
+
+  var zgLine=PRED.ctrl[0];
+  if(score>=zgLine-20){
+    var zp=calcProb(score,zgLine);
+    var zc=zp.cls;
+    if(zc==='sprint'&&score-zgLine<-10) zc='stable';
+    if(zp.p>=65&&zc==='sprint') zc='stable';
+    tiers[zc].push({id:'zg',nm:'综合高中班（多校）',tp:'综高',st:'—',pl:zgLine,pr:zp,useQ:0,useR:0,fo:0,isZg:1,gapFromScore:score-zgLine,isSprintOK:true});
+  }
+
+  var spec=[];
+  if(score>=580) spec.push({nm:'中职3+4分段培养',pl:642,pr:calcProb(score,642),tag:'全日制本科'});
+  if(score>=570) spec.push({nm:'5+2高职本科贯通',pl:603,pr:calcProb(score,603),tag:'全日制本科'});
+
+  var tierMap=[
+    {key:'sprint',label:'🎯 冲一冲',cls:'sprint'},
+    {key:'stable',label:'✅ 稳一稳',cls:'stable'},
+    {key:'safe',label:'🛡️ 保一保',cls:'safe'},
+    {key:'guarantee',label:'🔰 兜一兜',cls:'guarantee'},
+  ];
+
+  tierMap.forEach(function(t){
+    var arr=tiers[t.key];
+    if(!arr.length)return;
+    arr.sort(function(a,b){return b.pr.p-a.pr.p});
+    h+='<div class="tier"><div class="tier-h '+t.cls+'">'+t.label+'（'+arr.length+'所）</div>';
+    arr.forEach(function(s){
+      var g=s.pr.g;
+      var gc=g>=0?'var(--green)':'var(--red)';
+      var gt=g>=0?'+'+g:''+g;
+      var tags='';
+      if(s.useQ) tags+='<span class="badge b-r">指标生↓20</span>';
+      if(s.useR) tags+='<span class="badge b-g">农村专项</span>';
+      if(s.fo) tags+='<span class="badge b-o">仅应届</span>';
+      if(s.isZg) tags+='<span class="badge b-b">普高学籍</span>';
+      var meta=s.tp+(s.st||'')+' · 预测线'+s.pl;
+      if(s.effLine<s.pl){
+        var methods=[];
+        if(s.useQ) methods.push('指标生');
+        if(s.useR) methods.push('农村专项');
+        meta+=' → <span style="color:var(--green);font-weight:700">有效线'+s.effLine+'</span>（'+methods.join('+')+'）';
+      }
+      var pColor=s.pr.cls==='guarantee'?'var(--green)':s.pr.cls==='safe'?'var(--green)':s.pr.cls==='stable'?'var(--blue)':'var(--red)';
+      h+='<div class="sc"><div class="info"><div class="nm">'+s.nm+' '+tags+'</div><div class="mt">'+meta+'</div><div class="prob"><div style="width:'+s.pr.p+'%;background:'+pColor+'"></div></div><div style="font-size:10px;color:var(--gray);margin-top:1px">录取概率：<b style="color:'+pColor+'">'+s.pr.l+' '+s.pr.p+'%</b></div></div><div class="right"><div class="gap" style="color:'+gc+'">'+gt+'</div><div class="gl">与有效线差</div></div></div>';
+    });
+    h+='</div>';
+  });
+
+  if(spec.length){
+    h+='<div class="tier"><div class="tier-h stable">🎓 本科通道（'+spec.length+'条）</div>';
+    spec.forEach(function(s){
+      var g2=score-s.pl;
+      h+='<div class="sc"><div class="info"><div class="nm">'+s.nm+' <span class="badge b-g">'+s.tag+'</span></div><div class="mt">最低线'+s.pl+' · 录取概率'+s.pr.l+' '+s.pr.p+'%</div></div><div class="right"><div class="gap" style="color:var(--green)">'+(g2>=0?'+':'')+g2+'</div><div class="gl">分差距</div></div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(!allData.length){
+    h+='<div class="empty"><div class="em">😔</div><p>'+((score<440)?'建议关注第二批次五年制高职和3+3分段培养':'请检查分数')+'</p></div>';
+  }
+
+  if(allData.length){
+    var picks=[];
+    var sprintOK=tiers.sprint;
+    var byT={sprint:sprintOK,stable:tiers.stable,safe:tiers.safe,guarantee:tiers.guarantee};
+
+    if(byT.sprint.length) picks.push(byT.sprint[0]);
+    byT.stable.slice(0,2).forEach(function(x){picks.push(x)});
+    byT.safe.slice(0,2).forEach(function(x){picks.push(x)});
+    byT.guarantee.slice(0,2).forEach(function(x){picks.push(x)});
+
+    if(canQ4||canQ3){
+      var qSchools=allData.filter(function(x){return x.useQ});
+      if(qSchools.length){
+        var reasonableQ=qSchools.filter(function(x){return score-x.effLine>=-20});
+        if(reasonableQ.length){
+          var best=reasonableQ.sort(function(a,b){return b.pr.p-a.pr.p})[0];
+          var idx=picks.findIndex(function(x){return x.id===best.id});
+          if(idx>0){picks.splice(idx,1);picks.unshift(best)}
+          else if(idx===-1){picks.unshift(best)}
+        }
+      }
+    }
+
+    var bestR=null;
+    if(canR){
+      var rSchools=allData.filter(function(x){return x.useR});
+      if(rSchools.length){
+        var reasonableR=rSchools.filter(function(x){return score-x.effLine>=-20});
+        if(reasonableR.length){
+          bestR=reasonableR.sort(function(a,b){return a.effLine-b.effLine})[0];
+        }
+      }
+    }
+
+    if(score>=603&&!picks.some(function(x){return x.id==='3p4'})){
+      if(score>=642) picks.push({id:'3p4',nm:'3+4分段培养',tp:'特殊',st:'',pl:642,pr:calcProb(score,642),effLine:642,useQ:0,useR:0});
+      picks.push({id:'5p2',nm:'5+2本科贯通',tp:'特殊',st:'',pl:603,pr:calcProb(score,603),effLine:603,useQ:0,useR:0});
+    }
+
+    h+='<div class="card"><div class="card-t">📋 推荐志愿方案</div>';
+
+    if(bestR){
+      h+='<div class="tip tip-g">🌾 <b>农村专项（特殊类型栏·最优先填报）</b>：推荐'+bestR.nm+'（专项线'+bestR.effLine+'，降'+bestR.rd+'分），录不上不影响后续！</div>';
+    }
+
+    var strategy={sprint:'冲',stable:'稳',safe:'保',guarantee:'兜'};
+    var scolor={sprint:'var(--red)',stable:'var(--blue)',safe:'var(--green)',guarantee:'var(--gray)'};
+    picks.slice(0,8).forEach(function(s,i){
+      var st=strategy[s.pr.cls]||'冲';
+      var extra='';
+      if(s.useQ) extra+='<span class="badge b-r">指标生↓20</span>';
+      if(s.useR) extra+='<span class="badge b-g">农村专项</span>';
+      if(s.id==='3p4'||s.id==='5p2') extra='<span class="badge b-g">本科通道</span>';
+      var lineInfo='预测线'+s.pl;
+      if(s.effLine<s.pl) lineInfo+=' → 有效线'+s.effLine;
+      h+='<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">'+(i+1)+'</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">'+s.nm+' '+extra+'</div><div style="font-size:11px;color:var(--gray)">'+lineInfo+'</div></div><div style="font-size:12px;font-weight:700;color:'+scolor[s.pr.cls]+'">'+st+'</div></div>';
+    });
+    h+='<div class="tip tip-r" style="margin-top:8px">⚠ 模拟方案仅供参考，正式填报请登录宿迁中考招生平台（sqzk.jyj.suqian.gov.cn）</div></div>';
+  }
+
+  document.getElementById('result').innerHTML=h;
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
