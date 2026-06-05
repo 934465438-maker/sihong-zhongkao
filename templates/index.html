@@ -379,11 +379,15 @@ function unlockApp(userName){
   document.getElementById('reg-section').style.display='none';
   document.getElementById('tool-section').style.display='block';
   document.getElementById('welcome-name').textContent=userName;
-  document.querySelectorAll('.tab-locked').forEach(function(t){
+  // 解锁所有tab - 同时移除class和内联style
+  var tabs=document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
     t.classList.remove('tab-locked');
-    t.style.opacity='1';
-    t.style.pointerEvents='auto';
+    t.style.opacity='';
+    t.style.pointerEvents='';
   });
+  // 滚动到顶部
+  window.scrollTo(0,0);
 }
 
 // 页面加载时检查localStorage
@@ -452,11 +456,6 @@ function renderScore(yr){
   h+='</table></div>';
   document.getElementById('score-tb').innerHTML=h;
 }
-renderScore(2025);
-document.querySelectorAll('#rg-yr span').forEach(function(s){s.onclick=function(){renderScore(s.dataset.v)}});
-
-// ====== FAQ ======
-document.getElementById('faq-list').innerHTML=FAQD.map(function(f){return '<div class="faq" onclick="this.classList.toggle(\'open\')"><div class="faq-q">'+f[0]+'</div><div class="faq-a">'+f[1]+'</div></div>';}).join('');
 
 // ====== 注册提交 ======
 function submitReg(){
@@ -849,6 +848,11 @@ function analyze(){
   document.getElementById('result').innerHTML=h;
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+// ====== 页面初始化（必须在所有函数定义之后） ======
+renderScore(2025);
+document.querySelectorAll('#rg-yr span').forEach(function(s){s.onclick=function(){renderScore(s.dataset.v)}});
+document.getElementById('faq-list').innerHTML=FAQD.map(function(f){return '<div class="faq" onclick="this.classList.toggle(\'open\')"><div class="faq-q">'+f[0]+'</div><div class="faq-a">'+f[1]+'</div></div>';}).join('');
 </script>
 </body>
 </html>
