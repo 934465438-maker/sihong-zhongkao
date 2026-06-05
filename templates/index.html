@@ -69,7 +69,8 @@ tr:nth-child(even) td{background:#FAFAFA}
 .reg-success .icon{font-size:48px;margin-bottom:10px}
 .reg-success h3{color:var(--green);font-size:18px;margin-bottom:6px}
 .reg-success p{color:var(--gray);font-size:13px}
-/* tab-locked 已废弃：所有标签页均可直接访问 */
+.tab-locked{position:relative;opacity:.5;pointer-events:none}
+.tab-locked::after{content:'🔒';position:absolute;top:2px;right:2px;font-size:8px}
 @media(min-width:768px){.app{max-width:900px}.page{padding:20px 24px}.card{padding:20px}.stats{grid-template-columns:repeat(4,1fr)}.header h1{font-size:24px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
 </style>
 </head>
@@ -78,9 +79,9 @@ tr:nth-child(even) td{background:#FAFAFA}
 <div class="header"><h1>📋 泗洪中考志愿模拟填报</h1><p>2026年二模参考版 · 数据驱动 · 科学决策</p></div>
 <div class="tabs">
   <div class="tab on" data-p="home">🏠 首页</div>
-  <div class="tab" data-p="score" id="tab-score">📊 分数线</div>
-  <div class="tab" data-p="policy" id="tab-policy">📖 政策</div>
-  <div class="tab" data-p="faq" id="tab-faq">❓ FAQ</div>
+  <div class="tab tab-locked" data-p="score" id="tab-score">📊 分数线</div>
+  <div class="tab tab-locked" data-p="policy" id="tab-policy">📖 政策</div>
+  <div class="tab tab-locked" data-p="faq" id="tab-faq">❓ FAQ</div>
 </div>
 
 <!-- 首页 -->
@@ -419,7 +420,10 @@ function isValidPhone(p){return /^1[3-9]\d{9}$/.test(p);}
 
 // ====== Tab切换 ======
 document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){
-  // 已移除注册锁：所有标签页均可直接访问
+  if(t.classList.contains('tab-locked')){
+    alert('请先完成注册信息填写');
+    return;
+  }
   document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
   document.querySelectorAll('.page').forEach(function(x){x.classList.remove('on')});
   t.classList.add('on');
