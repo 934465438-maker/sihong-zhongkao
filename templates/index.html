@@ -76,7 +76,7 @@ tr:nth-child(even) td{background:#FAFAFA}
 </head>
 <body>
 <div class="app">
-<div class="header"><h1>📋 泗洪中考志愿模拟填报</h1><p>2026年二模参考版 · 数据驱动 · 科学决策</p></div>
+<div class="header"><h1>📋 泗洪中考志愿模拟填报</h1><p>数据驱动 · 科学决策</p></div>
 <div class="tabs">
   <div class="tab on" data-p="home">🏠 首页</div>
   <div class="tab tab-locked" data-p="score" id="tab-score">📊 分数线</div>
@@ -201,7 +201,7 @@ tr:nth-child(even) td{background:#FAFAFA}
       </select>
     </div>
     <div class="inp"><label>是否在本校连续就读三年</label><div class="radio" id="rg-3yr"><span class="on" data-v="yes">是</span><span data-v="no">否（有转学）</span></div></div>
-    <div class="inp"><label>综合素质评价等第</label><select id="ev"><option value="A">A（优秀）</option><option value="B" selected>B（良好）</option><option value="C">C（合格）</option><option value="D">D（待合格）</option></select></div>
+    <div class="inp" style="display:none"><label>综合素质评价等第</label><select id="ev"><option value="A">A（优秀）</option><option value="B" selected>B（良好）</option><option value="C">C（合格）</option><option value="D">D（待合格）</option></select></div>
     <button class="btn" onclick="analyze()">🔍 生成志愿方案</button>
   </div>
   <div id="result"></div>
