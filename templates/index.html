@@ -23,14 +23,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .inp label{display:block;font-size:12px;color:var(--gray);margin-bottom:4px;font-weight:600}
 .inp input,.inp select{width:100%;height:44px;border:1.5px solid var(--border);border-radius:8px;padding:0 12px;font-size:16px;color:var(--dark);background:#fff}
 .inp input:focus,.inp select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-.sms-row{display:flex;gap:8px;align-items:flex-end}
-.sms-row .inp{flex:1;margin-bottom:0}
-.sms-row .sms-btn{flex-shrink:0;height:44px;padding:0 14px;border:1.5px solid var(--blue);border-radius:8px;background:#fff;color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
-.sms-row .sms-btn:hover{background:#DBEAFE}
-.sms-row .sms-btn:disabled{border-color:var(--gray);color:var(--gray);background:#F3F4F6;cursor:not-allowed}
-.sms-inp-wrap{margin-bottom:12px}
-.sms-inp-wrap label{display:block;font-size:12px;color:var(--gray);margin-bottom:4px;font-weight:600}
-
 .radio{display:flex;gap:8px}
 .radio span{flex:1;text-align:center;padding:9px 0;border:1.5px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;transition:.15s}
 .radio span.on{border-color:var(--blue);background:#DBEAFE;color:var(--blue);font-weight:700}
@@ -122,12 +114,6 @@ tr:nth-child(even) td{background:#FAFAFA}
         </div>
         <div class="inp"><label>平时成绩/二模分数（满分800）</label><input type="number" id="reg-score" placeholder="选填，如580" min="0" max="800" inputmode="numeric"></div>
         <div class="inp"><label>家长联系电话 <span style="color:var(--red)">*</span></label><input type="tel" id="reg-phone" placeholder="请输入11位手机号（用于登录）" maxlength="11" inputmode="numeric"></div>
-        <div class="sms-inp-wrap"><label>验证码 <span style="color:var(--red)">*</span></label>
-          <div class="sms-row">
-            <div class="inp"><input type="text" id="reg-code" placeholder="请输入6位验证码" maxlength="6" inputmode="numeric"></div>
-            <button class="sms-btn" id="reg-sms-btn" onclick="sendSmsCode('reg')">获取验证码</button>
-          </div>
-        </div>
         <div id="reg-error" style="display:none" class="tip tip-r"></div>
         <button class="btn" id="reg-btn" onclick="submitReg()">✅ 提交注册，开始使用</button>
         <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--gray)">
@@ -137,12 +123,6 @@ tr:nth-child(even) td{background:#FAFAFA}
       <!-- 登录表单 -->
       <div id="login-form" style="display:none">
         <div class="inp"><label>注册时的手机号</label><input type="tel" id="login-phone" placeholder="请输入11位手机号" maxlength="11" inputmode="numeric"></div>
-        <div class="sms-inp-wrap"><label>验证码 <span style="color:var(--red)">*</span></label>
-          <div class="sms-row">
-            <div class="inp"><input type="text" id="login-code" placeholder="请输入6位验证码" maxlength="6" inputmode="numeric"></div>
-            <button class="sms-btn" id="login-sms-btn" onclick="sendSmsCode('login')">获取验证码</button>
-          </div>
-        </div>
         <div id="login-error" style="display:none" class="tip tip-r"></div>
         <button class="btn" onclick="submitLogin()">🔑 手机号登录</button>
         <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--gray)">
@@ -478,61 +458,6 @@ function renderScore(yr){
   document.getElementById('score-tb').innerHTML=h;
 }
 
-// ====== 短信验证码 ======
-var smsTimers={reg:0,login:0};
-function sendSmsCode(type){
-  var phoneEl=type==='reg'?document.getElementById('reg-phone'):document.getElementById('login-phone');
-  var phone=phoneEl.value.trim();
-  if(!phone||!isValidPhone(phone)){
-    alert('请先输入有效的11位手机号');
-    phoneEl.focus();
-    return;
-  }
-  var btn=document.getElementById(type+'-sms-btn');
-  btn.disabled=true;
-  btn.textContent='发送中...';
-  fetch('/api/send-code',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({phone:phone})
-  }).then(function(r){return r.json()}).then(function(d){
-    if(d.ok){
-      // 模拟模式下显示验证码
-      if(d.code){
-        var codeEl=document.getElementById(type+'-code');
-        codeEl.value=d.code;
-        alert('模拟模式：验证码为 '+d.code+'（已自动填入）');
-      }
-      startSmsCountdown(type);
-    }else{
-      btn.disabled=false;
-      btn.textContent='获取验证码';
-      alert((d.errors||['发送失败']).join('\n'));
-    }
-  }).catch(function(e){
-    btn.disabled=false;
-    btn.textContent='获取验证码';
-    alert('网络错误，请重试');
-  });
-}
-function startSmsCountdown(type){
-  var btn=document.getElementById(type+'-sms-btn');
-  var seconds=60;
-  smsTimers[type]=seconds;
-  btn.textContent=seconds+'秒后重试';
-  var timer=setInterval(function(){
-    seconds--;
-    if(seconds<=0){
-      clearInterval(timer);
-      smsTimers[type]=0;
-      btn.disabled=false;
-      btn.textContent='获取验证码';
-    }else{
-      btn.textContent=seconds+'秒后重试';
-    }
-  },1000);
-}
-
 // ====== 注册提交 ======
 function submitReg(){
   var name=document.getElementById('reg-name').value.trim();
@@ -544,10 +469,8 @@ function submitReg(){
 
   if(!name) errors.push('请输入学生姓名');
   if(!school) errors.push('请选择所在初中');
-  var regCode=document.getElementById('reg-code').value.trim();
   if(!phone) errors.push('请输入联系电话');
   else if(!isValidPhone(phone)) errors.push('请输入有效的11位手机号码');
-  if(!regCode) errors.push('请输入验证码');
   if(score){
     var sc=parseInt(score);
     if(isNaN(sc)||sc<0||sc>800) errors.push('分数应在0-800之间');
@@ -567,7 +490,7 @@ function submitReg(){
   fetch('/api/register',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name:name,school:school,score:score||'',phone:phone,code:document.getElementById('reg-code').value.trim()})
+    body:JSON.stringify({name:name,school:school,score:score||'',phone:phone})
   }).then(function(r){return r.json()}).then(function(d){
     btn.disabled=false;
     btn.textContent='✅ 提交注册，开始使用';
@@ -592,10 +515,8 @@ function submitLogin(){
   var errEl=document.getElementById('login-error');
   var errors=[];
 
-  var loginCode=document.getElementById('login-code').value.trim();
   if(!phone) errors.push('请输入手机号');
   else if(!isValidPhone(phone)) errors.push('请输入有效的11位手机号码');
-  if(!loginCode) errors.push('请输入验证码');
 
   if(errors.length){
     errEl.innerHTML=errors.join('<br>');
@@ -607,7 +528,7 @@ function submitLogin(){
   fetch('/api/login',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({phone:phone,code:document.getElementById('login-code').value.trim()})
+    body:JSON.stringify({phone:phone})
   }).then(function(r){return r.json()}).then(function(d){
     if(d.ok){
       saveUser(d.name,phone);
