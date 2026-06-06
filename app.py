@@ -1,41 +1,28 @@
 #!/usr/bin/env python3
-"""泗洪中考志愿模拟填报 - Flask后端"""
-import os, csv, re, sqlite3
+"""泗洪中考志愿模拟填报 - Flask后端（Supabase PostgreSQL版）"""
+import os, csv, re, tempfile
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, send_file
+from supabase import create_client, Client
 
 app = Flask(__name__)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-os.makedirs(DATA_DIR, exist_ok=True)
-DB_PATH = os.path.join(DATA_DIR, 'registrations.db')
-CSV_PATH = os.path.join(DATA_DIR, 'registrations.csv')
+# ====== Supabase 配置 ======
+SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
+
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise RuntimeError('请在环境变量中设置 SUPABASE_URL 和 SUPABASE_KEY')
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
 ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', 'sihong2026')
-
-def get_db():
-    db = sqlite3.connect(DB_PATH)
-    db.row_factory = sqlite3.Row
-    return db
-
-def init_db():
-    db = get_db()
-    db.execute('''CREATE TABLE IF NOT EXISTS registrations (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        timestamp TEXT NOT NULL,
-        name TEXT NOT NULL,
-        school TEXT NOT NULL,
-        score TEXT DEFAULT '',
-        phone TEXT NOT NULL UNIQUE
-    )''')
-    db.commit()
-    db.close()
-
-init_db()
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# ====== 注册 API ======
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json(force=True)
@@ -66,20 +53,28 @@ def register():
     if errors:
         return jsonify({'ok': False, 'errors': errors}), 400
 
-    db = get_db()
-    try:
-        db.execute(
-            'INSERT INTO registrations (timestamp, name, school, score, phone) VALUES (?, ?, ?, ?, ?)',
-            (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), name, school, str(score) if score != '' else '未填', phone)
-        )
-        db.commit()
-    except sqlite3.IntegrityError:
+    # 检查手机号是否已注册
+    existing = supabase.table('registrations').select('id').eq('phone', phone).execute()
+    if existing.data:
         return jsonify({'ok': False, 'errors': ['该手机号已注册，请直接登录']}), 400
-    finally:
-        db.close()
+
+    # 插入注册数据
+    try:
+        supabase.table('registrations').insert({
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'name': name,
+            'school': school,
+            'score': str(score) if score != '' else '未填',
+            'phone': phone
+        }).execute()
+    except Exception as e:
+        if 'duplicate' in str(e).lower() or 'unique' in str(e).lower():
+            return jsonify({'ok': False, 'errors': ['该手机号已注册，请直接登录']}), 400
+        return jsonify({'ok': False, 'errors': [f'注册失败，请重试']}), 500
 
     return jsonify({'ok': True, 'msg': '注册成功！', 'name': name, 'phone': phone})
 
+# ====== 登录 API ======
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json(force=True)
@@ -90,28 +85,30 @@ def login():
     if not re.match(r'^1[3-9]\d{9}$', phone):
         return jsonify({'ok': False, 'errors': ['手机号格式不正确']}), 400
 
-    db = get_db()
-    row = db.execute('SELECT name, school, score FROM registrations WHERE phone = ?', (phone,)).fetchone()
-    db.close()
+    result = supabase.table('registrations').select('name, school, score').eq('phone', phone).execute()
 
-    if not row:
+    if not result.data:
         return jsonify({'ok': False, 'errors': ['该手机号未注册，请先填写信息']}), 400
 
+    row = result.data[0]
     return jsonify({'ok': True, 'name': row['name'], 'phone': phone, 'school': row['school'], 'score': row['score']})
 
+# ====== 管理后台 ======
 @app.route('/admin')
 def admin():
     token = request.args.get('token', '')
     if token != ADMIN_TOKEN:
         return '<h3>访问被拒绝</h3><p>请在URL中添加正确的token</p>', 403
-    db = get_db()
-    records = [dict(r) for r in db.execute('SELECT * FROM registrations ORDER BY id DESC').fetchall()]
-    db.close()
+
+    result = supabase.table('registrations').select('*').order('id', desc=True).execute()
+    records = result.data
+
     school_count = {}
     for r in records:
         s = r.get('school', '未知')
         school_count[s] = school_count.get(s, 0) + 1
     school_stats = sorted(school_count.items(), key=lambda x: -x[1])
+
     return render_template('admin.html', records=records, total=len(records), school_stats=school_stats, token=token)
 
 @app.route('/admin/export')
@@ -119,15 +116,19 @@ def export_csv():
     token = request.args.get('token', '')
     if token != ADMIN_TOKEN:
         return '拒绝访问', 403
-    db = get_db()
-    records = db.execute('SELECT * FROM registrations ORDER BY id').fetchall()
-    db.close()
-    with open(CSV_PATH, 'w', newline='', encoding='utf-8-sig') as f:
-        w = csv.DictWriter(f, fieldnames=['timestamp', 'name', 'school', 'score', 'phone'])
+
+    result = supabase.table('registrations').select('*').order('id').execute()
+    records = result.data
+
+    # 写入临时文件
+    tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False, encoding='utf-8-sig', newline='')
+    with tmp:
+        w = csv.DictWriter(tmp, fieldnames=['timestamp', 'name', 'school', 'score', 'phone'])
         w.writeheader()
         for r in records:
-            w.writerow(dict(r))
-    return send_file(CSV_PATH, as_attachment=True, download_name='注册数据_' + datetime.now().strftime('%Y%m%d') + '.csv', mimetype='text/csv')
+            w.writerow({k: r.get(k, '') for k in ['timestamp', 'name', 'school', 'score', 'phone']})
+
+    return send_file(tmp.name, as_attachment=True, download_name='注册数据_' + datetime.now().strftime('%Y%m%d') + '.csv', mimetype='text/csv')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8000))
