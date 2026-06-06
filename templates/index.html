@@ -71,10 +71,23 @@ tr:nth-child(even) td{background:#FAFAFA}
 .reg-success p{color:var(--gray);font-size:13px}
 .tab-locked{position:relative;opacity:.5;pointer-events:none}
 .tab-locked::after{content:'🔒';position:absolute;top:2px;right:2px;font-size:8px}
+/* Loading 遮罩 */
+.loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#F5F7FA;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s}
+.loading-overlay.fade-out{opacity:0;pointer-events:none}
+.loading-spinner{width:40px;height:40px;border:3px solid #E5E7EB;border-top-color:#2563EB;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{margin-top:16px;font-size:14px;color:#6B7280;font-weight:500;letter-spacing:.5px}
+.loading-sub{margin-top:6px;font-size:11px;color:#9CA3AF}
 @media(min-width:768px){.app{max-width:900px}.page{padding:20px 24px}.card{padding:20px}.stats{grid-template-columns:repeat(4,1fr)}.header h1{font-size:24px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
 </style>
 </head>
 <body>
+<!-- Loading 遮罩 -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">正在加载中...</div>
+  <div class="loading-sub">首次访问可能需要等待30秒</div>
+</div>
 <div class="app">
 <div class="header"><h1>📋 泗洪中考志愿模拟填报</h1><p>数据驱动 · 科学决策</p></div>
 <div class="tabs">
@@ -399,6 +412,12 @@ function unlockApp(userName){
       var u=JSON.parse(saved);
       if(u.name&&u.phone) unlockApp(u.name);
     }catch(e){}
+  }
+  // 隐藏 loading 动画
+  var overlay=document.getElementById('loadingOverlay');
+  if(overlay){
+    overlay.classList.add('fade-out');
+    setTimeout(function(){overlay.style.display='none';},500);
   }
 })();
 
