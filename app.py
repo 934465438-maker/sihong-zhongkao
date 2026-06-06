@@ -8,11 +8,8 @@ from supabase import create_client, Client
 app = Flask(__name__)
 
 # ====== Supabase 配置 ======
-SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
-
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError('请在环境变量中设置 SUPABASE_URL 和 SUPABASE_KEY')
+SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://gyilfegdbmjdhwgrdpme.supabase.co')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5aWxmZWdkYm1qZGh3Z3JkcG1lIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDcxMTM5OSwiZXhwIjoyMDk2Mjg3Mzk5fQ.L67W1BWpTWe2F7GVq4q4CDHoHHF42Kn9fBX5aigIMhg')
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
